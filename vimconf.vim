@@ -11,7 +11,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline' " 状态栏增强
 Plug 'skywind3000/asyncrun.vim'
 
-Plug 'Valloric/YouCompleteMe' " , { 'do': 'usr/bin/python3.5 install.py' }
+Plug 'Valloric/YouCompleteMe' " , { 'do': '/usr/bin/python3.5 install.py' }
 " 重要提示：for ubuntu
 " 默认使用 install.py 会调用 path 路径中的 python编译，本机器设置的是 anaconda
 " 的 python，但是 anaconda
