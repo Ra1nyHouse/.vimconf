@@ -28,7 +28,8 @@ set encoding=utf-8
 set number
 set hlsearch " 高亮搜索结果
 set incsearch " 边输入边产生结果
-" set helplang=cn
+set nocompatible "关闭 vi 一致性
+set backspace=indent,eol,start "indent 表示可删除自动缩进产生的空格，eol 可删除回车，start 可删除此次插入前的字符
 
 " ***************插件设置*************
 nmap <F9> :NERDTreeToggle<cr>
