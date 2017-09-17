@@ -20,7 +20,7 @@ Plug 'Valloric/YouCompleteMe' " , { 'do': '/usr/bin/python3.5 install.py' }
 
 " Plug 'davidhalter/jedi-vim'
 Plug 'python-mode/python-mode'
-
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
 " **************系统设置**************
@@ -30,7 +30,14 @@ set hlsearch " 高亮搜索结果
 set incsearch " 边输入边产生结果
 set nocompatible "关闭 vi 一致性
 set backspace=indent,eol,start "indent 表示可删除自动缩进产生的空格，eol 可删除回车，start 可删除此次插入前的字符
+set cursorline
 
+" 括号补全
+inoremap ( ()<Esc>i
+inoremap [ []<Esc>i
+inoremap { {}<Esc>i
+inoremap ' ''<Esc>i
+inoremap " ""<Esc>i
 " ***************插件设置*************
 nmap <F9> :NERDTreeToggle<cr>
 
