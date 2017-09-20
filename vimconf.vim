@@ -9,7 +9,9 @@ Plug 'tomasr/molokai'
 Plug 'flazz/vim-colorschemes'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline' " 状态栏增强
+Plug 'vim-airline/vim-airline-themes'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 
 Plug 'Valloric/YouCompleteMe' " , { 'do': '/usr/bin/python3.5 install.py' }
 " 重要提示：for ubuntu
@@ -32,23 +34,26 @@ set nocompatible "关闭 vi 一致性
 set backspace=indent,eol,start "indent 表示可删除自动缩进产生的空格，eol 可删除回车，start 可删除此次插入前的字符
 set cursorline
 
+let mapleader = ","
 " 括号补全
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
-inoremap { {}<Esc>i
-inoremap ' ''<Esc>i
-inoremap " ""<Esc>i
+" inoremap ( ()<Esc>i
+" inoremap [ []<Esc>i
+" inoremap { {}<Esc>i
+" inoremap ' ''<Esc>i
+" inoremap " ""<Esc>i
 " ***************插件设置*************
 nmap <F9> :NERDTreeToggle<cr>
 
 colorscheme molokai
 
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPMixed'
 
 " 显示 buffers
 let g:airline#extensions#tabline#enabled = 1
-
+" powerline支持
+"let g:airline_powerline_fonts = 1
+let g:airline_theme='tomorrow'
 
 " for ycm
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -59,3 +64,6 @@ let g:ycm_python_binary_path = 'python'
 let g:pymode_python = 'python3'
 let g:pymode_rope_completion = 0 " 关闭自动补全，使用ycm
 
+nmap <f10> :TagbarToggle<CR>
+
+let g:NERDSpaceDelims = 1 " 注释后面自动加空格
