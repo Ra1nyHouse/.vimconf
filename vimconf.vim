@@ -1,10 +1,16 @@
-" specify a directory for plugins
-" - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" NERD tree will be loaded on the first invocation of NERDTreeToggle command
+" 自动补全的插件
+" Plug 'roxma/nvim-completion-manager'
+" Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+" Plug 'zchee/deoplete-jedi'
+Plug 'maralla/completor.vim'
+Plug 'Shougo/echodoc.vim'
+
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/nerdcommenter'
+
 Plug 'tomasr/molokai'
 Plug 'flazz/vim-colorschemes'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -13,57 +19,166 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 
-Plug 'Valloric/YouCompleteMe' " , { 'do': '/usr/bin/python3.5 install.py' }
-" 重要提示：for ubuntu
-" 默认使用 install.py 会调用 path 路径中的 python编译，本机器设置的是 anaconda
-" 的 python，但是 anaconda
-" 的动态链接库不在系统的环境变量中，也不能加进去，因为会覆盖很多有用的
-" lib，因此解决方案是使用系统的 Python环境来运行 Insall脚本！
+Plug 'jiangmiao/auto-pairs' " 括号对齐
+Plug 'easymotion/vim-easymotion' "快速移动光标
+Plug 'w0rp/ale' "语法检查
 
-" Plug 'davidhalter/jedi-vim'
-Plug 'python-mode/python-mode'
-Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/goyo.vim' "注意力集中
+Plug 'junegunn/limelight.vim'
+
+" Plug 'vim-scripts/YankRing.vim'
+
+Plug 'terryma/vim-smooth-scroll'
 call plug#end()
 
+
 " **************系统设置**************
-set encoding=utf-8
 set number
-set hlsearch " 高亮搜索结果
-set incsearch " 边输入边产生结果
-set nocompatible "关闭 vi 一致性
 set backspace=indent,eol,start "indent 表示可删除自动缩进产生的空格，eol 可删除回车，start 可删除此次插入前的字符
 set cursorline
+set splitbelow
+set splitright
+set noshowmode  "重要，在insert模式下，不显示--INSERT--
+" set cmdheight=2
 
-let mapleader = ","
-" 括号补全
-" inoremap ( ()<Esc>i
-" inoremap [ []<Esc>i
-" inoremap { {}<Esc>i
-" inoremap ' ''<Esc>i
-" inoremap " ""<Esc>i
+
+" terminal-mode
+" To map <Esc> to exit terminal-mode:
+    tnoremap <Esc> <C-\><C-n>
+
+
+" To use `ALT+{h,j,k,l}` to navigate windows from any mode:
+    " tnoremap <A-h> <C-\><C-N><C-w>h
+    " tnoremap <A-j> <C-\><C-N><C-w>j
+    " tnoremap <A-k> <C-\><C-N><C-w>k
+    " tnoremap <A-l> <C-\><C-N><C-w>l   
+    inoremap <A-h> <C-\><C-N><C-w>h
+    inoremap <A-j> <C-\><C-N><C-w>j
+    inoremap <A-k> <C-\><C-N><C-w>k
+    inoremap <A-l> <C-\><C-N><C-w>l
+    nnoremap <A-h> <C-w>h
+    nnoremap <A-j> <C-w>j
+    nnoremap <A-k> <C-w>k
+    nnoremap <A-l> <C-w>l
+
+    inoremap <A-g> <C-w>N
+    nnoremap <A-g> <C-w>N 
+
+
+
+" 把<M-key>改成 <Esc>key 序列, 放在最后执行
+function! Terminal_MetaMode(mode)
+    if has('nvim') || has('gui_running')
+        return
+    endif
+    function! s:metacode(mode, key)
+        if a:mode == 0
+            exec "set <M-".a:key.">=\e".a:key
+        else
+            exec "set <M-".a:key.">=\e]{0}".a:key."~"
+        endif
+    endfunc
+    for i in range(10)
+        call s:metacode(a:mode, nr2char(char2nr('0') + i))
+    endfor
+    for i in range(26)
+        call s:metacode(a:mode, nr2char(char2nr('a') + i))
+        call s:metacode(a:mode, nr2char(char2nr('A') + i))
+    endfor
+    if a:mode != 0
+        for c in [',', '.', '/', ';', '[', ']', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    else
+        for c in [',', '.', '/', ';', '{', '}']
+            call s:metacode(a:mode, c)
+        endfor
+        for c in ['?', ':', '-', '_']
+            call s:metacode(a:mode, c)
+        endfor
+    endif
+    if &ttimeout == 0
+        set ttimeout
+    endif
+    if &ttimeoutlen <= 0
+        set ttimeoutlen=100
+    endif
+endfunc
+
+
+au VimEnter * call Terminal_MetaMode(0)
 " ***************插件设置*************
-nmap <F9> :NERDTreeToggle<cr>
 
 colorscheme molokai
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPMixed'
-
 " 显示 buffers
 let g:airline#extensions#tabline#enabled = 1
-" powerline支持
-"let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 "显示tab的数字编号 
+" configure whether buffer numbers should be shown. >
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#show_close_button = 0
+
 let g:airline_theme='tomorrow'
+let g:airline#extensions#ale#enabled = 1
 
-" for ycm
-let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_python_binary_path = 'python'
 
-" for python-mode
-let g:pymode_python = 'python3'
-let g:pymode_rope_completion = 0 " 关闭自动补全，使用ycm
+" 利用 airline Tagbar 切换
+nmap t1 <Plug>AirlineSelectTab1
+nmap t2 <Plug>AirlineSelectTab2
+nmap t3 <Plug>AirlineSelectTab3
+nmap t4 <Plug>AirlineSelectTab4
+nmap t5 <Plug>AirlineSelectTab5
+nmap t6 <Plug>AirlineSelectTab6
+nmap t7 <Plug>AirlineSelectTab7
+nmap t8 <Plug>AirlineSelectTab8
+nmap t9 <Plug>AirlineSelectTab9
+nmap t[ <Plug>AirlineSelectPrevTab
+nmap t] <Plug>AirlineSelectNextTab
 
+nmap <f9> :NERDTreeToggle<CR>
 nmap <f10> :TagbarToggle<CR>
 
 let g:NERDSpaceDelims = 1 " 注释后面自动加空格
+
+let g:tagbar_autofocus = 1
+
+
+" 执行python脚本
+" nmap <f5> :wa<cr>:bo vsp term://python % <cr>
+
+" 使用 tab 选择自动补全的项目
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" 空格 调用光标跳转
+nmap <space> <leader><leader>s
+
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+
+
+let g:yankring_replace_n_pkey = '<m-p>'
+let g:yankring_replace_n_nkey = '<m-n>'
+nmap <leader>y :YRShow<cr>
+
+" Use deoplete
+" let g:deoplete#enable_at_startup = 1
+set completeopt-=preview
+let g:echodoc#enable_at_startup = 1
+" set shortmess+=c "不显示匹数数量等信息
+
+" 自动补全ale
+let g:ale_enabled = 0
+nmap <F11> :ALEToggle<CR>
+
+" smooth-scroll
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 20, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 20, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 20, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 20, 4)<CR>
+
+
+
