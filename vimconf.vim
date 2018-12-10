@@ -5,15 +5,16 @@ call plug#begin('~/.vim/plugged')
 " Plug 'roxma/nvim-completion-manager'
 " Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 " Plug 'zchee/deoplete-jedi'
-Plug 'maralla/completor.vim'
-Plug 'Shougo/echodoc.vim'
+" Plug 'maralla/completor.vim'
+" Plug 'Shougo/echodoc.vim'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'tomasr/molokai'
 Plug 'flazz/vim-colorschemes'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline' " 状态栏增强
 Plug 'vim-airline/vim-airline-themes'
 Plug 'skywind3000/asyncrun.vim'
@@ -21,14 +22,14 @@ Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 
 Plug 'jiangmiao/auto-pairs' " 括号对齐
 Plug 'easymotion/vim-easymotion' "快速移动光标
-Plug 'w0rp/ale' "语法检查
+" Plug 'w0rp/ale' "语法检查
 
-Plug 'junegunn/goyo.vim' "注意力集中
-Plug 'junegunn/limelight.vim'
+" Plug 'junegunn/goyo.vim' "注意力集中
+" Plug 'junegunn/limelight.vim'
 
 " Plug 'vim-scripts/YankRing.vim'
 
-Plug 'terryma/vim-smooth-scroll'
+" Plug 'terryma/vim-smooth-scroll'
 call plug#end()
 
 
@@ -40,6 +41,7 @@ set splitbelow
 set splitright
 set noshowmode  "重要，在insert模式下，不显示--INSERT--
 " set cmdheight=2
+set encoding=utf-8
 
 
 " terminal-mode
@@ -60,6 +62,15 @@ set noshowmode  "重要，在insert模式下，不显示--INSERT--
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
+
+    inoremap <Leader>h <C-\><C-N><C-w>h
+    inoremap <Leader>j <C-\><C-N><C-w>j
+    inoremap <Leader>k <C-\><C-N><C-w>k
+    inoremap <Leader>l <C-\><C-N><C-w>l
+    nnoremap <Leader>h <C-w>h
+    nnoremap <Leader>j <C-w>j
+    nnoremap <Leader>k <C-w>k
+    nnoremap <Leader>l <C-w>l
 
     inoremap <A-g> <C-w>N
     nnoremap <A-g> <C-w>N 
@@ -109,7 +120,7 @@ function! Terminal_MetaMode(mode)
 endfunc
 
 
-au VimEnter * call Terminal_MetaMode(0)
+" au VimEnter * call Terminal_MetaMode(0)
 " ***************插件设置*************
 
 colorscheme molokai
@@ -156,13 +167,14 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " 空格 调用光标跳转
 nmap <space> <leader><leader>s
 
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+" goyo
+" autocmd! User GoyoEnter Limelight
+" autocmd! User GoyoLeave Limelight!
 
-
-let g:yankring_replace_n_pkey = '<m-p>'
-let g:yankring_replace_n_nkey = '<m-n>'
-nmap <leader>y :YRShow<cr>
+" yankring
+" let g:yankring_replace_n_pkey = '<m-p>'
+" let g:yankring_replace_n_nkey = '<m-n>'
+" nmap <leader>y :YRShow<cr>
 
 " Use deoplete
 " let g:deoplete#enable_at_startup = 1
@@ -171,14 +183,14 @@ let g:echodoc#enable_at_startup = 1
 " set shortmess+=c "不显示匹数数量等信息
 
 " 自动补全ale
-let g:ale_enabled = 0
-nmap <F11> :ALEToggle<CR>
+" let g:ale_enabled = 0
+" nmap <F11> :ALEToggle<CR>
 
 " smooth-scroll
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 20, 2)<CR>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 20, 2)<CR>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 20, 4)<CR>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 20, 4)<CR>
+" noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 20, 2)<CR>
+" noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 20, 2)<CR>
+" noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 20, 4)<CR>
+" noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 20, 4)<CR>
 
 
 
